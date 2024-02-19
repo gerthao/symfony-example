@@ -1,0 +1,12 @@
+<div style="color: grey">
+    <i>
+        {% if message.created < date('-1year') %}
+            Older than 1 year
+        {% else %}
+            {{ message.created.format('Y-m-d') }}
+        {% endif %}
+    </i>
+</div>
+<div>
+    <a href="{{ path('app_hello_show', { id: key }) }}">{{ message.message }}</a>
+</div>

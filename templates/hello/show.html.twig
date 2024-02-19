@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ message.message }}{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ message.message }}</h1>
+        <div>
+            <p>Created at {{ message.created.format('Y-m-d') }}.</p>
+        </div>
+    </div>
+{% endblock %}

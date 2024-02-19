@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello{% endblock %}
+
+{% block body %}
+    <div>
+        <main>
+            <h1>Hello, World!</h1>
+            <div>Messages:</div>
+            <div>
+                {% if messages|length > 0 %}
+                    <ul style="list-style-type: none">
+                        {% for key, message in messages %}
+                            <li style="padding-bottom: 0.5rem;">
+                                {{ include('hello/_message.html.twig', { key: key, message: message }) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    There's nothing here yet!
+                {% endif %}
+            </div>
+        </main>
+    </div>
+{% endblock %}

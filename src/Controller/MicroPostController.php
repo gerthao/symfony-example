@@ -3,22 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Form\MicroPostFormType;
 use App\Repository\MicroPostRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MicroPostController extends AbstractController
 {
-    public function __construct(protected readonly MicroPostRepository $microPostRepository)
-    {
-    }
+    public function __construct(protected readonly MicroPostRepository $microPostRepository) {}
 
-    #[Route(['/micro-post', '/micro-post/page/{page<\d+>}'], name: 'app_micro_post_index', defaults: ['page' => 1], methods: 'GET')]
+    #[Route([
+        '/micro-post',
+        '/micro-post/page/{page<\d+>}'
+    ], name: 'app_micro_post_index', defaults: ['page' => 1], methods: 'GET')]
     public function index(int $page): Response
     {
         $limit     = 20;
@@ -26,8 +27,9 @@ class MicroPostController extends AbstractController
         $total     = $pagedData['total'];
         $data      = $pagedData['data'];
 
-        if ($total > 0 && count($data) === 0)
+        if ($total > 0 && count($data) === 0) {
             throw $this->createNotFoundException('Invalid index');
+        }
 
         return $this->render('micro_post/index.html.twig', [
             'page'       => $page,
@@ -43,8 +45,9 @@ class MicroPostController extends AbstractController
     {
         $microPost = $this->microPostRepository->findOneBy(['id' => $id]);
 
-        if (is_null($microPost))
-            throw $this->createNotFoundException('Could not find post');
+        if (is_null($microPost)) {
+            throw $this->createNotFoundException('Oops, that post could not be found.');
+        }
 
         return $this->render('micro_post/show.html.twig', [
             'microPost' => $microPost
@@ -55,12 +58,8 @@ class MicroPostController extends AbstractController
     public function create(Request $request): Response
     {
         $microPost = new MicroPost();
-        $form      = $this->createFormBuilder($microPost)
-            ->setMethod('POST')
-            ->add('title', TextType::class)
-            ->add('text', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Post'])
-            ->getForm();
+        $form      = $this->createForm(MicroPostFormType::class, $microPost)
+            ->add('save', SubmitType::class, ['label' => 'Save']);
 
         $form->handleRequest($request);
 
@@ -74,5 +73,30 @@ class MicroPostController extends AbstractController
         }
 
         return $this->render('micro_post/new.html.twig', ['form' => $form->createView()]);
+    }
+
+    #[Route('/micro-post/{id<\d+>}/edit', name: 'app_micro_post_edit')]
+    public function edit(int $id, Request $request): Response
+    {
+        $microPost = $this->microPostRepository->find($id);
+
+        if ($microPost === null) {
+            throw $this->createNotFoundException('Oops, that post could not be found.');
+        }
+
+        $form = $this->createForm(MicroPostFormType::class, $microPost)
+            ->add('save', SubmitType::class, ['label' => 'Save']);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $microPost = $form->getData();
+            $this->microPostRepository->add($microPost, flush: true);
+
+            $this->addFlash('success', 'Post has been successfully updated.');
+            return $this->redirectToRoute('app_micro_post_index');
+        }
+
+        return $this->render('micro_post/edit.html.twig', ['form' => $form->createView()]);
     }
 }

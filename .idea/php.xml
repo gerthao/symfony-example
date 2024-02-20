@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="LaravelPintOptionsConfiguration">
+    <option name="ruleset" value="laravel" />
+  </component>
   <component name="MessDetectorOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
@@ -167,7 +170,8 @@
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
-    <option name="config" value="C:\Users\gthao\Projects\symfony-example\phpstan.dist.neon" />
+    <option name="config" value="C:\Users\w3154444\Documents\projects\personal\symfony-example\phpstan.dist.neon" />
+    <option name="level" value="6" />
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">

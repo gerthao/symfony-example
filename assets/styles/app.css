@@ -1,5 +1,6 @@
 body {
     background-color: blanchedalmond;
+    font-family: sans-serif;
 }
 
 .posts {
@@ -44,4 +45,96 @@ body {
 
 .micro-posts-footer .micro-posts-page-next {
     text-align: right;
+}
+
+input, textarea {
+    font-size: 16px;
+    font-family: Calibri, sans-serif;
+}
+
+input[type='text'] {
+    width: 800px;
+    border: 1px solid black;
+    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+    font-size: 16px;
+}
+
+textarea {
+    border: 1px solid black;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    resize: vertical;
+    width: 800px;
+    min-height: 6rem;
+}
+
+.link {
+    transition: 0.3s;
+    color: black;
+    padding: 0.25rem 1.5rem;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.link:hover .link:active {
+    color: white;
+    cursor: none;
+}
+
+.link:link, .link:visited {
+    color: black;
+}
+
+.btn {
+    transition: 0.3s;
+    background-color: white;
+    color: black;
+    padding: 0.25rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid black;
+    font-size: 16px;
+}
+
+.btn.btn-link:link, .btn.btn-link:visited {
+    background-color: white;
+    color: black;
+}
+
+.btn:hover, .btn:active {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.btn.btn-link:hover, .btn.btn-link:active {
+    background-color: #e0e0e0;
+    color: black;
+    cursor: pointer;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%
+}
+
+.form-input-group + .form-input-group {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+.form .form-button-group {
+    align-self: flex-end;
+    text-align: right;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    min-width: 800px;
 }

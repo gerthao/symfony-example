@@ -1,3 +1,47 @@
 body {
-    background-color: skyblue;
+    background-color: blanchedalmond;
+}
+
+.posts {
+    display: flex;
+
+}
+
+.micro-posts {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: floralwhite;
+}
+
+.micro-posts .micro-posts-body .micro-post {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: 2px;
+    border-bottom: dimgrey 1px solid;
+    /*box-shadow: 1px 6px 8px rgba(0, 0, 0, 0.15);*/
+}
+
+.micro-posts .micro-posts-footer {
+    display: flex;
+    flex-direction: row;
+    padding: 1.0rem;
+    justify-content: flex-end;
+}
+
+.micro-posts-footer div {
+    flex-basis: 50%;
+    margin: 1.0rem;
+    letter-spacing: 1px;
+}
+
+.micro-posts-footer .micro-posts-page-prev {
+    text-align: left;
+}
+
+.micro-posts-footer .micro-posts-page-next {
+    text-align: right;
 }

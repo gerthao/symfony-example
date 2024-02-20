@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\MicroPost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,15 +25,33 @@ class MicroPostRepository extends ServiceEntityRepository
     /**
      * @param int $page
      * @param int $limit
-     * @return MicroPost[]
+     * @return array{total: int, data: MicroPost[]}
      */
     public function list(int $page, int $limit = 10): array
     {
-        return $this->createQueryBuilder('m')
+        $query = $this->createQueryBuilder('m')
+            ->orderBy('m.created', 'desc');
+
+
+        $paginator = new Paginator($query, false);
+        $total     = count($paginator);
+        $data      = $paginator
+            ->getQuery()
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
-            ->getQuery()
             ->getResult();
+
+        return [
+            'total' => $total,
+            'data'  => $data
+        ];
+    }
+
+    public function add(MicroPost $microPost, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($microPost);
+
+        if ($flush) $this->getEntityManager()->flush();
     }
 
 //    /**

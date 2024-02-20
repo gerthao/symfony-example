@@ -18,15 +18,35 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Hello! ✅</h1>
+        <h1>Hello! ✅ {{ total }}</h1>
 
         This friendly message is coming from:
-        <ul>
-            {% for microPost in microPosts %}
-                <li>
-                    {{ microPost.title() }}
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="micro-posts">
+            <div class="micro-posts-body">
+                {% for microPost in microPosts %}
+                    <div class="micro-post">
+                        <div class="card-title">
+                            <a href="{{ url('app_micro_post_show', { id : microPost.id() }) }}">{{ microPost.title() }}</a>
+                            | {{ microPost.created().format('Y-m-d') }}
+                        </div>
+                        <div class="card-body">
+                            {{ microPost.text() }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="micro-posts-footer">
+                <div class="micro-posts-page-prev">
+                    {% if hasPrev %}
+                        <a href="{{ url('app_micro_post_index.1', { page: page - 1 }) }}">Prev</a>
+                    {% endif %}
+                </div>
+                <div class="micro-posts-page-next">
+                    {% if hasNext %}
+                        <a href="{{ url('app_micro_post_index.1', { page: page + 1 }) }}">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

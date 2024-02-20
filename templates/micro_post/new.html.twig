@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ microPost.title() }}{% endblock %}
+{% block title %}Make New Post{% endblock %}
 
 {% block body %}
     <style>
@@ -18,9 +18,7 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>{{ microPost.title() }}</h1>
-        <div>
-            {{ microPost.text() }}
-        </div>
+        <h1>New Post</h1>
+        {{ form(form) }}
     </div>
 {% endblock %}

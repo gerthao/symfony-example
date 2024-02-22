@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="center">
-        <h1>Edit Post</h1>
+        <h1 style="padding-top: 1rem; padding-bottom: 1rem;">Edit Post</h1>
 
         <div class="form">
             {{ form_start(form) }}
@@ -18,7 +18,7 @@
                 {{ form_widget(form.text) }}
             </div>
             <div class="form-button-group">
-                <a class="link" href="{{ url('app_micro_post_index') }}">Cancel</a>
+                <a class="link" href="{{ url('app_micro_post_show', {'id': microPost.id()}) }}">Cancel</a>
                 {{ form_widget(form.save, {'attr': {'class': 'btn'}}) }}
             </div>
             {{ form_end(form) }}

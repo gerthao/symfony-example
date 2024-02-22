@@ -21,6 +21,13 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function add(Comment $data, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($data);
+
+        if ($flush) $this->getEntityManager()->flush();
+    }
+
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */

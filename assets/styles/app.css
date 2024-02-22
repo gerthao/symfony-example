@@ -3,6 +3,7 @@ body {
     font-family: sans-serif;
 }
 
+
 .posts {
     display: flex;
 
@@ -128,6 +129,11 @@ textarea {
     margin-bottom: 1.5em;
 }
 
+.form-input-group + .form-button-group {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
 .form .form-button-group {
     align-self: flex-end;
     text-align: right;
@@ -137,4 +143,6 @@ textarea {
     margin: auto;
     width: 50%;
     min-width: 800px;
+    font-size: 16px;
+    font-family: "FiraCode Nerd Font", sans-serif;
 }

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post - Add Comment{% endblock %}
+
+{% block body %}
+    <div class="center">
+        <h1 style="padding-top: 1rem; padding-bottom: 1rem;">Add Comment</h1>
+
+        <div style="margin-bottom: 2rem; margin-top: 2rem; padding: 2rem; border: 1px solid black; box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.15)">
+            <p style="font-size: 1.5rem;">{{ microPost.title() }}</p>
+            <p style="margin-left: 1.5rem;">{{ microPost.text() }}</p>
+        </div>
+
+        <div class="form">
+            {{ form_start(form) }}
+            <div>{{ form_errors(form) }}</div>
+            <div class="form-input-group">
+                {{ form_label(form.text, 'Write your comment here') }}
+                {{ form_widget(form.text) }}
+            </div>
+            <div class="form-button-group">
+                <a class="link" href="{{ url('app_micro_post_show', { id: microPost.id() }) }}">Cancel</a>
+                {{ form_widget(form.save, {'attr': {'class': 'btn'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

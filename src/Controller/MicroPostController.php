@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\MicroPost;
+use App\Form\CommentType;
 use App\Form\MicroPostFormType;
+use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
 use DateTimeImmutable;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +18,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MicroPostController extends AbstractController
 {
-    public function __construct(protected readonly MicroPostRepository $microPostRepository) {}
+    public function __construct(
+        protected readonly MicroPostRepository $microPostRepository,
+        protected readonly CommentRepository   $commentRepository,
+        protected readonly LoggerInterface     $logger,
+    )
+    {
+    }
 
     #[Route([
         '/micro-post',
@@ -80,9 +90,7 @@ class MicroPostController extends AbstractController
     {
         $microPost = $this->microPostRepository->find($id);
 
-        if ($microPost === null) {
-            throw $this->createNotFoundException('Oops, that post could not be found.');
-        }
+        if (is_null($microPost)) throw $this->createNotFoundException('Oops, that post could not be found.');
 
         $form = $this->createForm(MicroPostFormType::class, $microPost)
             ->add('save', SubmitType::class, ['label' => 'Save']);
@@ -94,9 +102,32 @@ class MicroPostController extends AbstractController
             $this->microPostRepository->add($microPost, flush: true);
 
             $this->addFlash('success', 'Post has been successfully updated.');
-            return $this->redirectToRoute('app_micro_post_index');
+            return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);
         }
 
-        return $this->render('micro_post/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('micro_post/edit.html.twig', ['microPost' => $microPost, 'form' => $form->createView()]);
+    }
+
+    #[Route('/micro-post/{id<\d+>}/comment/new', name: 'app_micro_post_comment_new')]
+    public function addComment(int $id, Request $request): Response
+    {
+        $microPost = $this->microPostRepository->find($id);
+        if (is_null($microPost)) throw $this->createNotFoundException('Oops, that post could not be found.');
+
+        $comment = new Comment();
+        $form    = $this->createForm(CommentType::class, $comment)
+            ->add('save', SubmitType::class, ['label' => 'Save']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setPost($microPost);
+            $this->commentRepository->add($comment, flush: true);
+
+            $this->addFlash('success', 'A comment has been successfully added.');
+            return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);
+        }
+
+        return $this->render('micro_post/comment/new.html.twig', ['microPost' => $microPost, 'form' => $form->createView()]);
     }
 }

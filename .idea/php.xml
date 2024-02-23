@@ -161,6 +161,7 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
@@ -170,7 +171,7 @@
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
-    <option name="config" value="C:\Users\w3154444\Documents\projects\personal\symfony-example\phpstan.dist.neon" />
+    <option name="config" value="C:\Users\gthao\Projects\symfony-example\phpstan.dist.neon" />
     <option name="level" value="6" />
     <option name="transferred" value="true" />
   </component>

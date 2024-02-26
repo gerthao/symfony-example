@@ -1,22 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ microPost.title() }}{% endblock %}
+{% block title %}Post | {{ microPost.title() }}{% endblock %}
+
+{% block bread %} / {{ microPost.title() }}{% endblock %}
 
 {% block body %}
-    <div class="center">
-        <h1 style="padding-top: 1rem; padding-bottom: 1rem;">Post #{{ microPost.id() }}</h1>
-        <div style="display: flex; align-items: flex-start; justify-content: flex-start; padding-bottom: 1.5rem;">
-            <a href='{{ url('app_micro_post_index') }}'>Go Back To Posts</a></div>
-        <div style="margin-bottom: 2rem; padding: 2rem; border: 1px solid black; box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.15)">
-            <p style="font-size: 1.5rem;">{{ microPost.title() }}</p>
-            <p style="margin-left: 1.5rem;">{{ microPost.text() }}</p>
+    <main>
+        {% set labelClass = 'block text-sm text-gray-700 dark:text-gray-300 font-medium' %}
+        {% set textInputClass = 'block w-full rounded-md shadow-sm border-gray-300 border dark:border-transparent dark:text-gray-800 p-2 mt-1 mb-2' %}
+        {% set cancelLinkClass = 'block w-32 rounded-full transition  shadow-sm align-center text-center border border-transparent hover:border-inherit hover:border shadow-sm underline p-2 mt-4 mb-2' %}
+        {% set submitButtonClass = 'block w-32 rounded-full transition  shadow-sm border-transparent bg-indigo-600 hover:indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white border p-2 mt-4 mb-2' %}
+        {% set optionsContainer = 'flex justify-end gap-4' %}
+        <div class="flex flex-col justify-center space-y-4">
+            <div class="text-4xl text-center opacity-100 transition ease-in-out  hover:opacity-60">
+                <a href="{{ url('app_micro_post_show', { id : microPost.id() }) }}">{{ microPost.title() }}</a>
+            </div>
+            <div class="mb-4 text-center text-gray-300">
+                <a href="#">user@email.com</a>
+            </div>
+            <div class="text-2xl dark:text-gray-400">
+                {{ microPost.text() }}
+            </div>
+            <div class="flex flex-row justify-between object-bottom">
+                <div class="text-gray-500 dark:text-gray-400">
+                    {{ microPost.created().format('M d, Y') }}
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="flex flex-row justify-start gap-4 mt-8">
+                <a class="mr-2 hover:underline" href="{{ url('app_micro_post_edit', {id: microPost.id()}) }}">Edit</a>
+                <a class="mr-2 hover:underline" href="{{ url('app_micro_post_comment_new', {id: microPost.id()}) }}">Comment</a>
+                <a class="mr-2 hover:underline" href="#">Like <span
+                            class="px-2 rounded-lg bg-gray-200 dark:bg-gray-700">0</span></a>
+            </div>
         </div>
-        <div style="display: flex; align-items: flex-start; justify-content: flex-end;">
-            <a style='margin-right: 0.5rem;'
-               href="{{ url('app_micro_post_edit', {'id': microPost.id() }) }}">Edit
-                Post</a>
-            <a style='margin-left: 0.5rem;'
-               href="{{ url('app_micro_post_comment_new', {'id': microPost.id() }) }}">Add Comment</a>
-        </div>
-    </div>
+    </main>
 {% endblock %}

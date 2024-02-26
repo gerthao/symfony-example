@@ -69,7 +69,7 @@ class MicroPostController extends AbstractController
     {
         $microPost = new MicroPost();
         $form      = $this->createForm(MicroPostFormType::class, $microPost)
-            ->add('save', SubmitType::class, ['label' => 'Save']);
+            ->add('save', SubmitType::class);
 
         $form->handleRequest($request);
 
@@ -82,7 +82,7 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('app_micro_post_index');
         }
 
-        return $this->render('micro_post/new.html.twig', ['form' => $form->createView()]);
+        return $this->render('micro_post/new.html.twig', ['form' => $form]);
     }
 
     #[Route('/micro-post/{id<\d+>}/edit', name: 'app_micro_post_edit')]
@@ -93,7 +93,7 @@ class MicroPostController extends AbstractController
         if (is_null($microPost)) throw $this->createNotFoundException('Oops, that post could not be found.');
 
         $form = $this->createForm(MicroPostFormType::class, $microPost)
-            ->add('save', SubmitType::class, ['label' => 'Save']);
+            ->add('save', SubmitType::class);
 
         $form->handleRequest($request);
 
@@ -105,7 +105,7 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);
         }
 
-        return $this->render('micro_post/edit.html.twig', ['microPost' => $microPost, 'form' => $form->createView()]);
+        return $this->render('micro_post/edit.html.twig', ['microPost' => $microPost, 'form' => $form]);
     }
 
     #[Route('/micro-post/{id<\d+>}/comment/new', name: 'app_micro_post_comment_new')]
@@ -128,6 +128,6 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);
         }
 
-        return $this->render('micro_post/comment/new.html.twig', ['microPost' => $microPost, 'form' => $form->createView()]);
+        return $this->render('micro_post/comment/new.html.twig', ['microPost' => $microPost, 'form' => $form]);
     }
 }

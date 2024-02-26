@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+<div>{{ form_errors(form) }}</div>
+<div>
+    {{ form_label(form.title, variables: {'label_attr' : {'class': 'block text-sm text-gray-700'}}) }}
+    {{ form_widget(form.title) }}
+</div>
+<div>
+    {{ form_label(form.text, 'Write your post here') }}
+    {{ form_widget(form.text) }}
+</div>
+<div>
+    <a href="{{ url('app_micro_post_index') }}">Cancel</a>
+    {{ form_widget(form.save, {'attr': {'class': 'btn'}}) }}
+</div>
+{{ form_end(form) }}

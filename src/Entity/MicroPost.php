@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MicroPostRepository::class)]
 class MicroPost
@@ -17,9 +18,23 @@ class MicroPost
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 4,
+        max: 500,
+        minMessage: 'The title is too short. It should have a minimum of 4 characters.',
+        maxMessage: 'The title is too long. It should have a maximum of 500 characters.'),
+    ]
     private ?string $title = null;
 
     #[ORM\Column(length: 500)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 4,
+        max: 500,
+        minMessage: 'The text is too short. It should have a minimum of 4 characters.',
+        maxMessage: 'The text is too long. It should have a maximum of 500 characters.'),
+    ]
     private ?string $text = null;
 
     #[ORM\Column]
@@ -34,7 +49,7 @@ class MicroPost
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->likedBy = new ArrayCollection();
+        $this->likedBy  = new ArrayCollection();
     }
 
     public function getId(): ?int

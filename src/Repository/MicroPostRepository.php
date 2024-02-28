@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\MicroPost;
+use App\Monad\Option\Option;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,6 +46,30 @@ class MicroPostRepository extends ServiceEntityRepository
             'total' => $total,
             'data'  => $data
         ];
+    }
+
+    public function findWithComments(int $id): ?MicroPost
+    {
+        $value = $this->createQueryBuilder('micro_post')
+            ->where("micro_post.id = $id")
+            ->addSelect('comments')
+            ->leftJoin('micro_post.comments', 'comments')
+            ->orderBy('micro_post.created', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        if (sizeof($value) === 0) return null;
+        else return $value[0];
+    }
+
+    public function findAllWithComments(): array
+    {
+        return $this->createQueryBuilder('micro_post')
+            ->addSelect('comments')
+            ->leftJoin('micro_post.comments', 'comments')
+            ->orderBy('micro_post.created', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function add(MicroPost $microPost, bool $flush = false): void

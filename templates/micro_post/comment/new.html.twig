@@ -2,7 +2,8 @@
 
 {% block title %}Post | Add Comment{% endblock %}
 
-{% block bread %} > Add Comment{% endblock %}
+{% block bread %} > <a
+        href="{{ path('app_micro_post_show', {'id': microPost.id }) }}">{{ microPost.title }}</a> > Add Comment{% endblock %}
 
 {% block body %}
     <main>
@@ -11,29 +12,33 @@
         {% set cancelLinkClass = 'block w-32 rounded-full transition  shadow-sm align-center text-center border border-transparent hover:border-inherit hover:border shadow-sm underline p-2 mt-4 mb-2' %}
         {% set submitButtonClass = 'block w-32 rounded-full transition  shadow-sm border-transparent bg-indigo-600 hover:indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white border p-2 mt-4 mb-2' %}
         {% set optionsContainer = 'flex justify-end gap-4' %}
+        {% set dataCountClass = 'px-2 rounded-lg bg-gray-200 dark:bg-gray-700' %}
+        {% set optionClass = 'mr-2 transition hover:border-b-2 hover:border-indigo-700 dark:hover:border-indigo-400 border-b-2 border-b-transparent' %}
         <div class="flex flex-col justify-center space-y-4">
             <div class="text-4xl text-center opacity-100 transition ease-in-out  hover:opacity-60">
-                <a href="{{ url('app_micro_post_show', { id : microPost.id() }) }}">{{ microPost.title() }}</a>
+                <a href="{{ url('app_micro_post_show', { id : microPost.id }) }}">{{ microPost.title }}</a>
             </div>
             <div class="mb-4 text-center text-gray-300">
                 <a href="#">user@email.com</a>
             </div>
             <div class="text-2xl dark:text-gray-400">
-                {{ microPost.text() }}
+                {{ microPost.text }}
             </div>
             <div class="flex flex-row justify-between object-bottom">
                 <div class="text-gray-500 dark:text-gray-400">
-                    {{ microPost.created().format('M d, Y') }}
+                    {{ microPost.created.format('M d, Y') }}
                 </div>
                 <div>
 
                 </div>
             </div>
             <div class="flex flex-row justify-start gap-4 mt-8">
-                <a class="mr-2 hover:underline" href="{{ url('app_micro_post_edit', {id: microPost.id()}) }}">Edit</a>
-                <a class="mr-2 hover:underline" href="{{ url('app_micro_post_comment_new', {id: microPost.id()}) }}">Comment</a>
-                <a class="mr-2 hover:underline" href="#">Like <span
-                            class="px-2 rounded-lg bg-gray-200 dark:bg-gray-700">0</span></a>
+                <a class="{{ optionClass }}" href="{{ url('app_micro_post_edit', {id: microPost.id}) }}">Edit</a>
+                <a class="{{ optionClass }} font-bold"
+                   href="{{ url('app_micro_post_comment_new', {id: microPost.id}) }}">Comment
+                    <span class="{{ dataCountClass }}">{{ microPost.comments|length }}</span>
+                </a>
+                <a class="{{ optionClass }}" href="#">Like <span class="{{ dataCountClass }}">0</span></a>
             </div>
             <div>
                 {{ form_start(form) }}
@@ -43,7 +48,7 @@
                     {{ form_widget(form.text, {'attr': {'class': textInputClass}}) }}
                 </div>
                 <div class="{{ optionsContainer }}">
-                    <a class="{{ cancelLinkClass }}" href="{{ url('app_micro_post_show', { id: microPost.id() }) }}">Cancel</a>
+                    <a class="{{ cancelLinkClass }}" href="{{ url('app_micro_post_show', { id: microPost.id }) }}">Cancel</a>
                     {{ form_widget(form.save, {'attr': {'class': submitButtonClass }}) }}
                 </div>
                 {{ form_end(form) }}

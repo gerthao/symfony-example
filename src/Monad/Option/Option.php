@@ -5,6 +5,7 @@ namespace App\Monad\Option;
 
 use App\Monad\Monad;
 use JiriPudil\SealedClasses\Sealed;
+use Throwable;
 
 /**
  * @template T
@@ -39,6 +40,16 @@ readonly abstract class Option implements Monad
     public function getOrElse(mixed $default)
     {
         return !isset($this->value) ? $default : $this->value;
+    }
+
+    /**
+     * @returns T
+     * @throws Throwable
+     */
+    public function getOrThrow(Throwable $error)
+    {
+        if (isset($this->value)) return $this->value;
+        throw new $error;
     }
 
     /**

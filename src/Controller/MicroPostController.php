@@ -53,7 +53,7 @@ class MicroPostController extends AbstractController
     #[Route('/micro-post/{id<\d+>}', name: 'app_micro_post_show', methods: 'GET')]
     public function show(int $id): Response
     {
-        $microPost = $this->microPostRepository->findOneBy(['id' => $id]);
+        $microPost = $this->microPostRepository->findWithComments($id);
 
         if (is_null($microPost)) {
             throw $this->createNotFoundException('Oops, that post could not be found.');

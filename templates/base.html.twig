@@ -21,7 +21,11 @@
         {% block bread %}{% endblock %}
     </div>
     <div class="text-sm text-gray-400 dark:text-gray-500">
-        <a href="#">Login & Registration</a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('app_logout') }}#">Log out</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Login & Registration</a>
+        {% endif %}
     </div>
 </div>
 <div class="w-full md:w-2/3 mx-auto">

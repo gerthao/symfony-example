@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LoginController!{% endblock %}
+
+{% block body %}
+    {% set labelClass = 'block text-sm text-gray-700 dark:text-gray-300 font-medium' %}
+    {% set textInputClass = 'block w-full rounded-md shadow-sm border-gray-300 border dark:border-transparent dark:text-gray-800 p-2 mt-1 mb-2' %}
+    {% set i = 'border-gray-300 border-t-2 mt-8 pt-4' %}
+    <div class="bg-gray-900 rounded-md p-8">
+        <div class="text-center mb-4 font-medium text-2xl">
+            <h1>Log in</h1>
+        </div>
+        <form class="divide-y divide-slate-700 grid gap-4" action="{{ path('app_login') }}" method="post">
+            <div>
+                {% if error %}
+                    <div class="pb-2 text-red-700 dark:text-red-300">
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    </div>
+                {% endif %}
+                <div>
+                    <label class="{{ labelClass }}" for="last-username">Email</label>
+                    <input class="{{ textInputClass }}" id="last-username" type="text" name="_username"
+                           value="{{ lastUsername }}"/>
+                </div>
+                <div>
+                    <label class="{{ labelClass }}" for="password">Password</label>
+                    <input class="{{ textInputClass }}" id="password" type="password" name="_password"/>
+                </div>
+                <div>
+                    <input type="hidden" name="_target_path" value="{{ path('app_micro_post_index') }}"/>
+                </div>
+            </div>
+            <div class="flex flex-row-reverse">
+                <button class="block w-full rounded-full transition shadow-sm border-transparent bg-indigo-600 hover:indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white border p-2 mt-4 mb-2"
+                        type="submit">Login
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

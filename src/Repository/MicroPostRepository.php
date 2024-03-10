@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\MicroPost;
-use App\Monad\Option\Option;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,7 +31,6 @@ class MicroPostRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.created', 'desc');
-
 
         $paginator = new Paginator($query, false);
         $total     = count($paginator);

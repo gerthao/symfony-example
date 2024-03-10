@@ -16,7 +16,7 @@
         {% set optionClass = 'mr-2 transition hover:border-b-2 hover:border-indigo-700 dark:hover:border-indigo-400 border-b-2 border-b-transparent' %}
         <div class="flex flex-col justify-center space-y-4">
             <div class="text-4xl text-center opacity-100 transition ease-in-out  hover:opacity-60">
-                <a href="{{ url('app_micro_post_show', { id : microPost.id }) }}">{{ microPost.title }}</a>
+                <a href="{{ path('app_micro_post_show', { id : microPost.id }) }}">{{ microPost.title }}</a>
             </div>
             <div class="mb-4 text-center text-gray-300">
                 <a href="#">user@email.com</a>
@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="flex flex-row justify-start gap-4 mt-8">
-                <a class="{{ optionClass }}" href="{{ url('app_micro_post_edit', {id: microPost.id}) }}">Edit</a>
+                <a class="{{ optionClass }}" href="{{ path('app_micro_post_edit', {id: microPost.id}) }}">Edit</a>
                 <a class="{{ optionClass }} font-bold"
-                   href="{{ url('app_micro_post_comment_new', {id: microPost.id}) }}">Comment
+                   href="{{ path('app_micro_post_comment_new', {id: microPost.id}) }}">Comment
                     <span class="{{ dataCountClass }}">{{ microPost.comments|length }}</span>
                 </a>
                 <a class="{{ optionClass }}" href="#">Like <span class="{{ dataCountClass }}">0</span></a>
@@ -48,7 +48,7 @@
                     {{ form_widget(form.text, {'attr': {'class': textInputClass}}) }}
                 </div>
                 <div class="{{ optionsContainer }}">
-                    <a class="{{ cancelLinkClass }}" href="{{ url('app_micro_post_show', { id: microPost.id }) }}">Cancel</a>
+                    <a class="{{ cancelLinkClass }}" href="{{ path('app_micro_post_show', { id: microPost.id }) }}">Cancel</a>
                     {{ form_widget(form.save, {'attr': {'class': submitButtonClass }}) }}
                 </div>
                 {{ form_end(form) }}

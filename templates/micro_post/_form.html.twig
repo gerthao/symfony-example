@@ -9,7 +9,7 @@
     {{ form_widget(form.text) }}
 </div>
 <div>
-    <a href="{{ url('app_micro_post_index') }}">Cancel</a>
+    <a href="{{ path('app_micro_post_index') }}">Cancel</a>
     {{ form_widget(form.save, {'attr': {'class': 'btn'}}) }}
 </div>
 {{ form_end(form) }}

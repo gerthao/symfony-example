@@ -15,7 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
 class MicroPostController extends AbstractController
 {
     public function __construct(
@@ -65,6 +68,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/new', name: 'app_micro_post_new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response
     {
         $microPost = new MicroPost();
@@ -74,9 +78,17 @@ class MicroPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $microPost = $form->getData();
-            $microPost->setCreated(new DateTimeImmutable());
-            $this->microPostRepository->add($microPost, flush: true);
+            /* @var MicroPost $microPost */
+            $microPost       = $form->getData();
+            $currentDateTime = new DateTimeImmutable();
+
+            $this->microPostRepository->add(
+                $microPost
+                    ->setCreated($currentDateTime)
+                    ->setLastModified($currentDateTime)
+                    ->setAuthor($this->getUser()),
+                flush: true
+            );
 
             $this->addFlash('success', 'Post has been successfully created.');
             return $this->redirectToRoute('app_micro_post_index');
@@ -86,6 +98,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{id<\d+>}/edit', name: 'app_micro_post_edit')]
+    #[IsGranted('ROLE_EDITOR')]
     public function edit(int $id, Request $request): Response
     {
         $microPost = $this->microPostRepository->find($id);
@@ -98,8 +111,16 @@ class MicroPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $microPost = $form->getData();
-            $this->microPostRepository->add($microPost, flush: true);
+            /* @var MicroPost $microPost */
+            $microPost       = $form->getData();
+            $currentDateTime = new DateTimeImmutable();
+
+            $this->microPostRepository->add(
+                $microPost
+                    ->setLastModified(new DateTimeImmutable())
+                    ->setLastModified($currentDateTime),
+                flush: true
+            );
 
             $this->addFlash('success', 'Post has been successfully updated.');
             return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);
@@ -109,6 +130,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{id<\d+>}/comment/new', name: 'app_micro_post_comment_new')]
+    #[IsGranted('ROLE_COMMENTER')]
     public function addComment(int $id, Request $request): Response
     {
         $microPost = $this->microPostRepository->find($id);
@@ -120,9 +142,18 @@ class MicroPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment = $form->getData();
-            $comment->setPost($microPost);
-            $this->commentRepository->add($comment, flush: true);
+            /* @var Comment $comment */
+            $comment         = $form->getData();
+            $currentDateTime = new DateTimeImmutable();
+
+            $this->commentRepository->add(
+                $comment
+                    ->setPost($microPost)
+                    ->setCreated($currentDateTime)
+                    ->setLastModified($currentDateTime)
+                    ->setAuthor($this->getUser()),
+                flush: true
+            );
 
             $this->addFlash('success', 'A comment has been successfully added.');
             return $this->redirectToRoute('app_micro_post_show', ['id' => $id]);

@@ -24,7 +24,7 @@
             {{ form_errors(form.text) }}
         </div>
         <div class="{{ optionsContainer }}">
-            <a class="{{ cancelLinkClass }}" href="{{ url('app_micro_post_show', {id: microPost.id()}) }}">Cancel</a>
+            <a class="{{ cancelLinkClass }}" href="{{ path('app_micro_post_show', {id: microPost.id()}) }}">Cancel</a>
             {{ form_widget(form.save, {'attr': {'class': submitButtonClass }}) }}
         </div>
         {{ form_end(form) }}

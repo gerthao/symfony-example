@@ -18,7 +18,7 @@
                 <a href="{{ path('app_micro_post_show', { id : microPost.id }) }}">{{ microPost.title }}</a>
             </div>
             <div class="mb-4 text-center text-gray-300">
-                <a href="#">user@email.com</a>
+                <a href="#">{{ microPost.author.email }}</a>
             </div>
             <div class="text-2xl dark:text-gray-400">
                 {{ microPost.text }}
@@ -48,8 +48,8 @@
                             <div class="inline-block bg-gray-200 dark:bg-gray-700 rounded-full text-3xl w-8 h-8 ring-2 ring-white dark:ring-gray-600 mr-2">
                             </div>
                             <div>
-                                <div class="font-medium text-gray-800 dark:text-gray-300">Author</div>
-                                <div class="font-light text-gray-500 dark:text-gray-500">When</div>
+                                <div class="font-medium text-gray-800 dark:text-gray-300">{{ comment.author.email }}</div>
+                                <div class="font-light text-gray-500 dark:text-gray-500">{{ comment.created.format('M d, Y') }}</div>
                             </div>
                         </div>
                         <div class="flex">

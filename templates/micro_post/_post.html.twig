@@ -2,7 +2,7 @@
     <a href="{{ path('app_micro_post_show', { id : microPost.id() }) }}">{{ microPost.title|truncate(20, '...') }}</a>
 </div>
 <div class="mb-4 text-gray-300">
-    <a href="#">user@email.com</a>
+    <a href="#">{{ microPost.author.email }}</a>
 </div>
 <div class="text-2xl dark:text-gray-400">
     {{ microPost.text()|truncate(100, '...') }}

@@ -8,6 +8,7 @@ use App\Form\CommentType;
 use App\Form\MicroPostFormType;
 use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
+use App\Security\Voter\MicroPostVoter;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
 class MicroPostController extends AbstractController
 {
     public function __construct(
@@ -33,6 +32,7 @@ class MicroPostController extends AbstractController
         '/micro-post',
         '/micro-post/page/{page<\d+>}'
     ], name: 'app_micro_post_index', defaults: ['page' => 1], methods: 'GET')]
+    #[IsGranted(MicroPostVoter::VIEW, 'post')]
     public function index(int $page): Response
     {
         $limit     = 20;
@@ -54,6 +54,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{id<\d+>}', name: 'app_micro_post_show', methods: 'GET')]
+    #[IsGranted(MicroPostVoter::VIEW, 'post')]
     public function show(int $id): Response
     {
         $microPost = $this->microPostRepository->findWithComments($id);
@@ -68,7 +69,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/new', name: 'app_micro_post_new')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(Request $request): Response
     {
         $microPost = new MicroPost();
@@ -98,7 +99,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{id<\d+>}/edit', name: 'app_micro_post_edit')]
-    #[IsGranted('ROLE_EDITOR')]
+    #[IsGranted(MicroPostVoter::EDIT, 'post')]
     public function edit(int $id, Request $request): Response
     {
         $microPost = $this->microPostRepository->find($id);
